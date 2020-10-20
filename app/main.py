@@ -97,6 +97,11 @@ def logout():
     return redirect(url_for("index"))
 
 
+@app.route("/debug", methods=["GET"])
+def debug():
+    return jsonify(headers=dict(**request.headers))
+
+
 @app.route("/")
 def index():
     return jsonify(authorized=github.authorized)
