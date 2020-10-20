@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  github-star-proxy:
+    build: .
+    container_name: github-star-proxy
+    env_file:
+      - .env.example
+      - .env
+    ports:
+    - "5555:80"
+    restart: always
