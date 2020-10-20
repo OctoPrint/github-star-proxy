@@ -14,7 +14,10 @@ app.config["GITHUB_OAUTH_CLIENT_SECRET"] = os.environ.get("GITHUB_OAUTH_CLIENT_S
 
 app.config["DEBUG"] = os.environ.get("FLASK_DEBUG") == "true"
 
-github_bp = make_github_blueprint(scope=",".join(sorted(SCOPES)), redirect_to="login")
+github_bp = make_github_blueprint(
+    scope=",".join(sorted(SCOPES)),
+    redirect_url=os.environ.get("GITHUB_OAUTH_REDIRECT_URL"),
+)
 app.register_blueprint(github_bp, url_prefix="/login")
 
 
