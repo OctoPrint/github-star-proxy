@@ -1,10 +1,9 @@
 import os
 
-from flask import (Flask, abort, current_app, jsonify, redirect, request,
-                   url_for)
+from flask import Flask, abort, current_app, jsonify, redirect, request, url_for
 from flask_dance.contrib.github import github, make_github_blueprint
 
-from .reverse_proxied import ReverseProxied
+from reverse_proxied import ReverseProxied
 
 SCOPES = ["user", "repo"]
 FORWARDED_HEADERS = ["date", "content-type", "etag", "last-modified"]
