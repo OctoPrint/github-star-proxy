@@ -1,8 +1,10 @@
 import os
 
-from flask import Flask, abort, current_app, jsonify, redirect, request, url_for
+from flask import (Flask, abort, current_app, jsonify, redirect, request,
+                   url_for)
 from flask_dance.contrib.github import github, make_github_blueprint
-from reverse_proxied import ReverseProxied
+
+from .reverse_proxied import ReverseProxied
 
 SCOPES = ["user", "repo"]
 FORWARDED_HEADERS = ["date", "content-type", "etag", "last-modified"]
@@ -69,6 +71,14 @@ def starred(user, repo):
     if not github.authorized:
         return abort(401)
     r = github.get("/user/starred/{}/{}".format(user, repo), stream=True)
+    return to_flask_response(r)
+
+
+@app.route("/repos/<string:owner>/<string:repo>", methods=["GET"])
+def repo(owner, repo):
+    if not github.authorized:
+        return abort(401)
+    r = github.get("/repos/{}/{}".format(owner, repo), stream=True)
     return to_flask_response(r)
 
 
