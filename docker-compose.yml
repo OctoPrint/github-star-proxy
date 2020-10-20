@@ -3,6 +3,8 @@ services:
   github-star-proxy:
     build: .
     container_name: github-star-proxy
+    environment:
+      - VARIABLE_NAME=proxied
     env_file:
       - .env.example
       - .env

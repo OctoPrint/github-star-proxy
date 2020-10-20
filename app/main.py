@@ -1,12 +1,15 @@
 import os
 
-from flask import Flask, abort, current_app, jsonify, redirect, request, url_for
+from flask import (Flask, abort, current_app, jsonify, redirect, request,
+                   url_for)
 from flask_dance.contrib.github import github, make_github_blueprint
+from reverse_proxied import ReverseProxied
 
 SCOPES = ["user", "repo"]
 FORWARDED_HEADERS = ["date", "content-type", "etag", "last-modified"]
 
 app = Flask(__name__)
+proxied = ReverseProxied(app)
 
 app.secret_key = os.environ.get("FLASK_SECRET_KEY")
 app.config["GITHUB_OAUTH_CLIENT_ID"] = os.environ.get("GITHUB_OAUTH_CLIENT_ID")
@@ -14,10 +17,7 @@ app.config["GITHUB_OAUTH_CLIENT_SECRET"] = os.environ.get("GITHUB_OAUTH_CLIENT_S
 
 app.config["DEBUG"] = os.environ.get("FLASK_DEBUG") == "true"
 
-github_bp = make_github_blueprint(
-    scope=",".join(sorted(SCOPES)),
-    redirect_url=os.environ.get("GITHUB_OAUTH_REDIRECT_URL"),
-)
+github_bp = make_github_blueprint(scope=",".join(sorted(SCOPES)), redirect_to="login")
 app.register_blueprint(github_bp, url_prefix="/login")
 
 
