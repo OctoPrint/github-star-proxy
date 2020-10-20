@@ -1,6 +1,7 @@
 import os
 
-from flask import Flask, abort, current_app, jsonify, redirect, request, url_for
+from flask import (Flask, abort, current_app, jsonify, redirect, request,
+                   url_for)
 from flask_dance.contrib.github import github, make_github_blueprint
 
 SCOPES = ["user", "repo"]
@@ -13,6 +14,8 @@ app.config["GITHUB_OAUTH_CLIENT_ID"] = os.environ.get("GITHUB_OAUTH_CLIENT_ID")
 app.config["GITHUB_OAUTH_CLIENT_SECRET"] = os.environ.get("GITHUB_OAUTH_CLIENT_SECRET")
 
 app.config["DEBUG"] = os.environ.get("FLASK_DEBUG") == "true"
+app.config["SERVER_NAME"] = os.environ.get("FLASK_SERVER_NAME")
+app.config["PREFERRED_URL_SCHEME"] = os.environ.get("FLASK_PREFERRED_URL_SCHEME")
 
 github_bp = make_github_blueprint(
     scope=",".join(sorted(SCOPES)),
